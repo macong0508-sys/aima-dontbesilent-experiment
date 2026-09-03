@@ -1,2 +1,92 @@
-# aima-dontbesilent-experiment
-AI马过河抖音图文卡片生成器实验版，天策项目基础上增加 dontbesilent 项目推文素材等功能
+# AI马过河抖音图文卡片生成器
+
+AI马过河抖音图文卡片生成器。选择内容、背景和卡片样式后，可以直接导出 3:4 竖图，并生成配套发布文案。
+
+在线体验：[AI马过河抖音图文卡片生成器](https://macong0508-sys.github.io/aima-tweet-card-generator/)
+
+## 功能
+
+- 2,102 条中文成品素材，支持分类、搜索和随机抽取；其中 578 条提炼自天策飞书核心内容库
+- 566 条公开历史推文，可搜索和改写
+- 8 种 AI 主题改写结构
+- 白色、黑色推文卡片
+- 自定义头像、显示名称、用户名和发布日期
+- 评论、转发、点赞、浏览、收藏五项稳定展示数据，可一键换一组
+- 抖音 3:4 海报与纯卡片两种输出
+- 无需切换模式即可直接导出纯推文卡片，图片高度随正文自动增长
+- 长文自动调整字号和卡片尺寸，避免正文被截断
+- 自定义背景、本地上传或使用网络图片
+- 23 张内置背景，降低不同账号的画面同质化
+- 鼠标拖动卡片，调整位置和大小
+- 自动生成一句发布文案和 3 个话题标签
+- 一键导出 PNG，全程在浏览器本地运行
+- 手机端调用系统分享面板保存到相册，不支持文件分享时提供长按保存兜底
+
+## 实验分支：dontbesilent 推文素材
+
+本仓库的 `experiment-dontbesilent` 分支用于安全实验：在保留原有 566 条历史推文的基础上，额外接入 dontbesilent 开源推文集的 1,544 条精选素材。稳定的 `main` 分支不受影响，实验分支也不会自动替换当前 GitHub Pages 页面。
+
+- 在网页“历史原推”中可按“全部来源”“AI马过河历史”“dontbesilent 推文”筛选，并可搜索主题和标签。
+- 新增数据文件：`src/dontbesilent-posts.json`；每条素材保留原帖 X 链接、日期、主题和标签。
+- 来源：[dontbesilent2025/dbskill 的开源推文集](https://github.com/dontbesilent2025/dbskill/blob/main/books/dontbesilent-%E5%BC%80%E6%BA%90%E6%8E%A8%E6%96%87%E9%9B%86.md)。
+- 该素材集遵循 [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)：使用时须保留作者与来源、附许可证链接并说明修改；仅限非商业使用，商业用途需另行取得许可。
+
+## 安装
+
+需要先安装 [Node.js 20 或更高版本](https://nodejs.org/)。
+
+```bash
+git clone https://github.com/macong0508-sys/aima-tweet-card-generator.git
+cd aima-tweet-card-generator
+npm install
+npm run dev
+```
+
+启动后打开终端显示的本地网址，通常是：
+
+```text
+http://localhost:5173
+```
+
+## 构建
+
+```bash
+npm run build
+npm run test:sites
+```
+
+构建产物位于 `dist/`。
+
+## 自定义成自己的版本
+
+- 修改头像、名字和账号：直接在网页的“检查并下载”区域设置；也可以替换默认头像 `public/assets/tiance-avatar.jpg`
+- 修改历史内容：替换 `src/tweets.json`；实验分支的 dontbesilent 素材位于 `src/dontbesilent-posts.json`
+- 修改基础 AI 素材库：编辑 `src/content-sources.json`
+- 更新飞书精选素材：运行 `node scripts/extract-feishu-materials.mjs <lark-fetch.json>`，结果写入 `src/feishu-content-sources.json`
+- 修改背景：替换 `public/backgrounds/` 中的图片并更新 `src/App.jsx`
+
+## 内容与数据边界
+
+- 工具本身不需要 OpenAI API Key，也不会上传用户编辑的正文。
+- 历史推文来自公开内容归档，仅作为作者自己的内容素材使用；实验分支中的 dontbesilent 素材须遵守其 CC BY-NC 4.0 许可和非商业限制。
+- 卡片互动数字用于视觉排版演示，不代表真实社交平台数据。
+- 发布内容前应人工检查事实、个人经历、收益表述和平台规则。
+- 不要把他人的内容替换成自己的署名，也不要编造使用效果或收入结果。
+- 仓库内图片素材请在商业使用前自行确认授权范围；你也可以替换成自己的图片。
+
+`npm run build` 默认使用仓库自带的公开推文数据。如果你拥有自己的 X 数据归档，可以把包含 `tweets.js` 和 `note-tweet.js` 的目录传给同步脚本：
+
+```bash
+TIANCE_X_ARCHIVE_DIR=/你的归档/data npm run data:sync
+```
+
+## 技术栈
+
+- React 19
+- Vite 6
+- html-to-image
+- Phosphor Icons
+
+## 许可证
+
+代码使用 [MIT License](./LICENSE) 开源。
